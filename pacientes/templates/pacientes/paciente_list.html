@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Lista de pacientes{% endblock titulo %}
+    
+{% block contenido %}
+<h1>Lista de pacientes</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido paterno</th>
+            <th>Apellido materno</th>
+            <th>Fecha de nacimiento</th>
+            <th>No. Seguro social</th>
+            <th>Tipo de sangre</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for paciente in object_list %}
+        <tr>
+            <td>{{paciente.nombre}}</td>
+            <td>{{paciente.primerApellido}}</td>
+            <td>{{paciente.segundoApellido}}</td>
+            <td>{{paciente.fecha_nac}}</td>
+            <td>{{paciente.numero_ss}}</td>
+            <td>{{paciente.tipo_sangre}}</td>
+            <td>
+                <a title="Actualiza paciente" class="btn btn-warning" href="{% url 'pacientes:editar' paciente.id %}">
+                    <i class="far fa-edit"></i>
+                </a>
+                <a title="Elimina paciente" class="btn btn-danger" href="{% url 'pacientes:eliminar' paciente.id %}">
+                    <i class="far fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<nav aria-label="...">
+    <ul class="pagination">
+        
+        {% if page_obj.has_previous %}
+            <li>
+                <a class="page-link" href="?page=1">Firts</a>
+            </li>
+            <li>
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" >Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{page_obj.previous_page_number}}</a></li>
+        {% endif %}
+
+      <li class="page-item active">
+        <a class="page-link" href="#"> {{ page_obj.number }} <span class="sr-only">(current)</span></a>
+      </li>
+      
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li>
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+  </nav>
+
+{% endblock contenido %}
+    
