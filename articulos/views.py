@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DeleteView
 from django.views.generic.edit import FormMixin
 from .models import Articulo, Venta, DetalleVenta
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .forms import QuantityForm
 
 class Lista(LoginRequiredMixin, ListView):
@@ -11,6 +11,14 @@ class Lista(LoginRequiredMixin, ListView):
     model = Articulo
     form_class = QuantityForm
     paginate_by = 5
+
+
+def eliminarArt(request, pk):
+    primarykey = int(pk)
+    obj = get_object_or_404(Articulo, id=primarykey)
+    obj.delete()
+    return redirect('articulos:lista')
+
 
 
 def comprar(request, pk):
